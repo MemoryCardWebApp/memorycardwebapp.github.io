@@ -5,24 +5,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Japanese Study Cards</title>
 	<link rel="stylesheet" href="home.css">
-	<script type="module">
-		import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-		import { getDatabase } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
-
-		const firebaseConfig = {
-			apiKey: "AIzaSyByWVHEdCoWNxhJ2yx3Y52hbqxeRULT0xc",
-			authDomain: "memory-cards-web-app.firebaseapp.com",
-			databaseURL: "https://memory-cards-web-app-default-rtdb.europe-west1.firebasedatabase.app",
-			projectId: "memory-cards-web-app",
-			storageBucket: "memory-cards-web-app.appspot.com",
-			messagingSenderId: "423580591304",
-			appId: "1:423580591304:web:726eb47e80dd7fa1c3f1fd"
-		};
-
-		const app = initializeApp(firebaseConfig);
-		const database = getDatabase(app);
-		window.database = database;
-	</script>
 </head>
 <body>
 	<div class="container">
@@ -66,6 +48,6 @@
 			</div>
 		</form>
 	</div>
-	<script type="module" src="home.js"></script>
+	<script src="home.js" defer></script>
 </body>
 </html>

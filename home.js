@@ -1,5 +1,3 @@
-import { ref, get, set } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
-
 const card = document.getElementById('card');
 const frontText = document.getElementById('front-text');
 const backText = document.getElementById('back-text');
@@ -23,9 +21,6 @@ let currentCardIndex = 0;
 let cards = [
 	{}
 ]
-
-// Get a reference to the database service
-const database = window.database;
 
 function updateCard() {
 	if (cards.length === 0) {
@@ -140,32 +135,31 @@ function addNewCard(e) {
 
 // Function to load cards from Firebase
 function loadCards() {
-	const dbRef = ref(database, 'cards');
-	get(dbRef).then((snapshot) => {
-		if (snapshot.exists()) {
-			cards = Object.values(snapshot.val());
-			console.log('Cards loaded successfully');
-		} else {
-			cards = [];
-			console.log('No cards found. Initializing with an empty array.');
-		}
+	const storedCards = localStorage.getItem('cards');
+	if (storedCards) {
+		cards = JSON.parse(storedCards);
+		console.log('Cards loaded from localStorage');
 		updateCard();
-	}).catch((error) => {
-		console.error('Error loading cards:', error);
-		cards = [];
-	});
+	} else {
+		fetch('cards.json')
+			.then(response => response.json())
+			.then(data => {
+				cards = data;
+				console.log('Cards loaded successfully from JSON file');
+				updateCard();
+			})
+			.catch(error => {
+				console.error('Error loading cards:', error);
+				cards = [];
+				updateCard();
+			});
+	}
 }
 
 // Function to save cards to Firebase
 function saveCards() {
-	const dbRef = ref(database, 'cards');
-	set(dbRef, cards)
-		.then(() => {
-			console.log('Cards saved successfully');
-		})
-		.catch((error) => {
-			console.error('Error saving cards:', error);
-		});
+	localStorage.setItem('cards', JSON.stringify(cards));
+	console.log('Cards saved successfully');
 }
 
 updateCard();
