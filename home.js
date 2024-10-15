@@ -144,8 +144,13 @@ function loadCards() {
 		fetch('cards.json')
 			.then(response => response.json())
 			.then(data => {
-				cards = data;
-				console.log('Cards loaded successfully from JSON file');
+				if (Array.isArray(data) && data.length > 0) {
+					cards = data;
+					console.log('Cards loaded successfully from JSON file');
+				} else {
+					console.log('JSON file is empty or invalid. Using default empty array.');
+					cards = [];
+				}
 				updateCard();
 			})
 			.catch(error => {
