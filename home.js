@@ -13,11 +13,6 @@ const cancelBtn = document.getElementById('cancel-btn');
 const subtypeButtons = document.getElementById('subtype-buttons');
 
 let currentCardIndex = 0;
-/* let cards = [
-	{ front: '犬', back: 'いぬ (inu) - dog', type: 'noun' },
-	{ front: '猫', back: 'ねこ (neko) - cat', type: 'noun' },
-	{ front: '水', back: 'みず (mizu) - water', type: 'noun' }
-]; */
 let cards = [
 	{}
 ]
@@ -103,20 +98,8 @@ function addNewCard(e) {
 	const type = typeInput.value;
 	const subtype = subtypeButtons.querySelector('.active')?.textContent || '';
 
-	/* This regular expression is used to validate Japanese text input:
-		- \u3040-\u309F: Matches Hiragana characters
-		- \u30A0-\u30FF: Matches Katakana characters
-		- \u4E00-\u9FAF: Matches Kanji characters
-		- \s: Matches whitespace (spaces, tabs, line breaks)
-		The ^ and $ ensure the entire input matches this pattern
-	   The + allows one or more of these characters */
 	const japaneseRegex = /^[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\s]+$/;
 
-	/* The !japaneseRegex.test(front) condition checks if the 'front' input does NOT match the Japanese character regex
-		If it doesn't match (returns false), the ! operator inverts it to true, triggering the alert
-		This ensures that only valid Japanese characters (Hiragana, Katakana, Kanji, and spaces) are accepted
-		If any non-Japanese characters are present, it will return false, which becomes true with !, showing the alert 
-	*/
 	if (!japaneseRegex.test(front)) {
 		alert('The front of the card must contain only Japanese characters.');
 		return;
@@ -124,47 +107,32 @@ function addNewCard(e) {
 
 	if (front && back && type) {
 		cards.push({ front, back, type, subtype });
-		saveCards(); // Save cards after adding a new one
+		saveCards(); // This will now log the updated cards array
 		hideAddCardForm();
-		alert('New card added successfully!');
+		alert('New card added successfully! Please update the cards.json file on GitHub with the logged data.');
 	} else {
 		alert('Please fill in all required fields.');
 	}
 }
 
-
-// Function to load cards from Firebase
 function loadCards() {
 	const storedCards = localStorage.getItem('cards');
 	if (storedCards) {
 		cards = JSON.parse(storedCards);
-		console.log('Cards loaded from localStorage');
-		updateCard();
 	} else {
+		// Load initial cards from your static JSON file
 		fetch('cards.json')
 			.then(response => response.json())
 			.then(data => {
-				if (Array.isArray(data) && data.length > 0) {
-					cards = data;
-					console.log('Cards loaded successfully from JSON file');
-				} else {
-					console.log('JSON file is empty or invalid. Using default empty array.');
-					cards = [];
-				}
-				updateCard();
-			})
-			.catch(error => {
-				console.error('Error loading cards:', error);
-				cards = [];
-				updateCard();
+				cards = data;
+				localStorage.setItem('cards', JSON.stringify(cards));
 			});
 	}
+	updateCard();
 }
 
-// Function to save cards to Firebase
 function saveCards() {
 	localStorage.setItem('cards', JSON.stringify(cards));
-	console.log('Cards saved successfully');
 }
 
 updateCard();
