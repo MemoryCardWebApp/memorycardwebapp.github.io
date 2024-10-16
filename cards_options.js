@@ -39,6 +39,8 @@ document.addEventListener('DOMContentLoaded', () => {
         fileInput.onchange = (event) => handleFileUpload(event, false);
     });
 
+    addCardForm.addEventListener('submit', addNewCard);
+
     function toggleButtonState(button, relatedElement) {
         if (activeButton === button) {
             // Disable the active button's functionality
@@ -96,9 +98,37 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function showAddCardForm() {
-        addCardForm.style.display = 'block';
-        updateSubtypeButtons();
+    function addNewCard(e) {
+        e.preventDefault();
+        const front = frontInput.value.trim();
+        const back = backInput.value.trim();
+        const type = typeInput.value;
+        const subtype = subtypeButtons.querySelector('.active')?.textContent || '';
+
+        const japaneseRegex = /^[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\s]+$/;
+
+        if (!japaneseRegex.test(front)) {
+            alert('The front of the card must contain only Japanese characters.');
+            return;
+        }
+
+        if (front && back && type) {
+            cards.push({ front, back, type, subtype });
+            saveCards();
+            resetForm();
+            alert('New card added successfully!');
+        } else {
+            alert('Please fill in all required fields.');
+        }
+    }
+
+    function resetForm() {
+        frontInput.value = '';
+        backInput.value = '';
+        typeInput.value = '';
+        subtypeButtons.querySelectorAll('.subtype-button').forEach(button => {
+            button.classList.remove('active');
+        });
     }
 
     function updateSubtypeButtons() {
@@ -117,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const button = document.createElement('button');
             button.textContent = subtype;
             button.classList.add('subtype-button');
-            button.type = 'button';
+            button.type = 'button'; // Prevent form submission
             button.addEventListener('click', () => selectSubtype(button));
             subtypeButtons.appendChild(button);
         });
@@ -128,30 +158,6 @@ document.addEventListener('DOMContentLoaded', () => {
             button.classList.remove('active');
         });
         selectedButton.classList.add('active');
-    }
-
-    function addNewCard(e) {
-        e.preventDefault();
-        const front = frontInput.value.trim();
-        const back = backInput.value.trim();
-        const type = typeInput.value;
-        const subtype = subtypeButtons.querySelector('.active')?.textContent || '';
-
-        const japaneseRegex = /^[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\s]+$/;
-
-        if (!japaneseRegex.test(front)) {
-            alert('The front of the card must contain only Japanese characters.');
-            return;
-        }
-
-        if (front && back && type) {
-            cards.push({ front, back, type, subtype });
-            saveCards();
-            addCardForm.style.display = 'none';
-            alert('New card added successfully!');
-        } else {
-            alert('Please fill in all required fields.');
-        }
     }
 
     function saveCards() {
@@ -165,22 +171,8 @@ document.addEventListener('DOMContentLoaded', () => {
             cards = JSON.parse(storedCards);
             console.log('Cards loaded successfully from localStorage');
         } else {
-            fetch('cards.json')
-                .then(response => response.json())
-                .then(data => {
-                    if (Array.isArray(data) && data.length > 0) {
-                        cards = data;
-                        console.log('Cards loaded successfully from JSON file');
-                        localStorage.setItem('cards', JSON.stringify(cards));
-                    } else {
-                        console.log('JSON file is empty or invalid. Using default empty array.');
-                        cards = [];
-                    }
-                })
-                .catch(error => {
-                    console.error('Error loading cards:', error);
-                    cards = [];
-                });
+            console.log('No cards found in localStorage. Using empty array.');
+            cards = [];
         }
     }
 
@@ -198,5 +190,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     typeInput.addEventListener('change', updateSubtypeButtons);
+
+    function loadCards() {
+        const storedCards = localStorage.getItem('cards');
+        if (storedCards) {
+            cards = JSON.parse(storedCards);
+            console.log('Cards loaded successfully from localStorage');
+        } else {
+            console.log('No cards found in localStorage. Using empty array.');
+            cards = [];
+        }
+    }
+
+    // Load cards when the page loads
     loadCards();
 });
