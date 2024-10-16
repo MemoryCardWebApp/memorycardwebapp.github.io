@@ -106,36 +106,46 @@ function addNewCard(e) {
 
 	if (front && back && type) {
 		cards.push({ front, back, type, subtype });
-		saveCards(); // This will now log the updated cards array
+		saveCards(); // Save cards to localStorage
 		hideAddCardForm();
-		alert('New card added successfully! Please update the cards.json file on GitHub with the logged data.');
+		updateCard();
+		alert('New card added successfully!');
 	} else {
 		alert('Please fill in all required fields.');
 	}
 }
 
 function loadCards() {
-	fetch('cards.json')
-		.then(response => response.json())
-		.then(data => {
-			if (Array.isArray(data) && data.length > 0) {
-				cards = data;
-				console.log('Cards loaded successfully from JSON file');
-			} else {
-				console.log('JSON file is empty or invalid. Using default empty array.');
+	const storedCards = localStorage.getItem('cards');
+	if (storedCards) {
+		cards = JSON.parse(storedCards);
+		console.log('Cards loaded successfully from localStorage');
+		updateCard();
+	} else {
+		fetch('cards.json')
+			.then(response => response.json())
+			.then(data => {
+				if (Array.isArray(data) && data.length > 0) {
+					cards = data;
+					console.log('Cards loaded successfully from JSON file');
+					localStorage.setItem('cards', JSON.stringify(cards));
+				} else {
+					console.log('JSON file is empty or invalid. Using default empty array.');
+					cards = [];
+				}
+				updateCard();
+			})
+			.catch(error => {
+				console.error('Error loading cards:', error);
 				cards = [];
-			}
-			updateCard();
-		})
-		.catch(error => {
-			console.error('Error loading cards:', error);
-			cards = [];
-			updateCard();
-		});
+				updateCard();
+			});
+	}
 }
 
 function saveCards() {
 	localStorage.setItem('cards', JSON.stringify(cards));
+	console.log('Cards saved successfully to localStorage');
 }
 
 function downloadCards() {
