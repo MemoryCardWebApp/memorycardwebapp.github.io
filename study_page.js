@@ -8,6 +8,18 @@ const flipBtn = document.getElementById('flip-btn');
 const nextBtn = document.getElementById('next-btn');
 const prevBtn = document.getElementById('prev-btn');
 
+/*
+Card selection probability based on knowledge level:
+Level 1 (Least known): 40%
+Level 2: 30%
+Level 3: 15%
+Level 4: 10%
+Level 5 (Most known): 5%
+
+This weighted distribution ensures more 
+frequent review of less familiar cards.
+*/
+
 function flipCard() {
 	card.classList.toggle('flipped');
 }
