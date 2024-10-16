@@ -173,3 +173,25 @@
     color: white;
     border-color: #2980b9;
 }
+
+#upload-options {
+    margin-top: 20px;
+    display: none;
+    justify-content: center;
+    gap: 10px;
+}
+
+.upload-option-button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.upload-option-button:hover {
+    background-color: #2980b9;
+}

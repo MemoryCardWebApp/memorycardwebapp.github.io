@@ -8,6 +8,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const backInput = document.getElementById('back-input');
     const typeInput = document.getElementById('type-input');
     const subtypeButtons = document.getElementById('subtype-buttons');
+    const uploadOptions = document.getElementById('upload-options');
+    const fileInput = document.getElementById('file-input');
+    const replaceCardsBtn = document.getElementById('replace-cards-btn');
+    const addToExistingBtn = document.getElementById('add-to-existing-btn');
 
     let cards = [];
 
@@ -17,9 +21,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     downloadCardsBtn.addEventListener('click', downloadCards);
     uploadCardsBtn.addEventListener('click', () => {
-        alert('Upload cards functionality to be implemented');
+        uploadOptions.style.display = 'block';
     });
     addCardForm.addEventListener('submit', addNewCard);
+
+    replaceCardsBtn.addEventListener('click', () => {
+        fileInput.click();
+        fileInput.onchange = (event) => handleFileUpload(event, true);
+    });
+
+    addToExistingBtn.addEventListener('click', () => {
+        fileInput.click();
+        fileInput.onchange = (event) => handleFileUpload(event, false);
+    });
 
     function showAddCardForm() {
         addCardForm.style.display = 'block';
@@ -124,6 +138,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
     typeInput.addEventListener('change', updateSubtypeButtons);
     loadCards();
+
+    function handleFileUpload(event, replace) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const uploadedCards = JSON.parse(e.target.result);
+                    if (Array.isArray(uploadedCards)) {
+                        if (replace) {
+                            cards = uploadedCards;
+                        } else {
+                            cards = cards.concat(uploadedCards);
+                        }
+                        saveCards();
+                        alert('Cards uploaded successfully!');
+                        uploadOptions.style.display = 'none';
+                    } else {
+                        throw new Error('Invalid JSON format');
+                    }
+                } catch (error) {
+                    alert('Error parsing JSON file. Please make sure it\'s a valid JSON array of cards.');
+                }
+            };
+            reader.readAsText(file);
+        }
+    }
 });
 
 // Make sure to include your existing card-related functions (e.g., loadCards, saveCards, etc.) in this file
