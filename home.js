@@ -11,6 +11,7 @@ const backInput = document.getElementById('back-input');
 const typeInput = document.getElementById('type-input');
 const cancelBtn = document.getElementById('cancel-btn');
 const subtypeButtons = document.getElementById('subtype-buttons');
+const downloadBtn = document.getElementById('download-btn');
 
 let currentCardIndex = 0;
 let cards = [
@@ -135,6 +136,16 @@ function saveCards() {
 	localStorage.setItem('cards', JSON.stringify(cards));
 }
 
+function downloadCards() {
+	const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(cards, null, 2));
+	const downloadAnchorNode = document.createElement('a');
+	downloadAnchorNode.setAttribute("href", dataStr);
+	downloadAnchorNode.setAttribute("download", "cards.json");
+	document.body.appendChild(downloadAnchorNode);
+	downloadAnchorNode.click();
+	downloadAnchorNode.remove();
+}
+
 updateCard();
 
 flipBtn.addEventListener('click', flipCard);
@@ -144,6 +155,7 @@ addCardBtn.addEventListener('click', showAddCardForm);
 addCardForm.addEventListener('submit', addNewCard);
 cancelBtn.addEventListener('click', hideAddCardForm);
 typeInput.addEventListener('change', updateSubtypeButtons);
+downloadBtn.addEventListener('click', downloadCards);
 
 // Load cards when the page loads
 window.addEventListener('load', loadCards);
