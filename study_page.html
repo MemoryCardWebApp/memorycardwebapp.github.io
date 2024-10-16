@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Japanese Study Cards</title>
+	<link rel="stylesheet" href="study_page.css">
+</head>
+<body>
+	<a href="index.html" class="back-button">Back to Home</a>
+	<div class="container">
+		<h1>Japanese Study Cards</h1>
+		<div id="card-container">
+			<div id="card">
+				<div class="card-face front">
+					<p id="front-text"></p>
+				</div>
+				<div class="card-face back">
+					<p id="back-text"></p>
+				</div>
+			</div>
+		</div>
+		<div class="controls">
+			<button id="prev-btn">Previous</button>
+			<button id="flip-btn">Flip</button>
+			<button id="next-btn">Next</button>
+		</div>
+		<button id="add-card-btn">Add New Card</button>
+		<form id="add-card-form" style="display: none;">
+			<div class="input-container">
+				<input type="text" id="front-input" placeholder="Front (Japanese character)" required>
+				<input type="text" id="back-input" placeholder="Back (romaji and meaning)" required>
+				<div class="type-selection">
+					<select id="type-input" required>
+						<option value="">Select type</option>
+						<option value="verb">Verb</option>
+						<option value="noun">Noun</option>
+						<option value="adjective">Adjective</option>
+						<option value="adverb">Adverb</option>
+						<option value="phrase">Phrase</option>
+						<option value="other">Other</option>
+					</select>
+					<div id="subtype-buttons" class="subtype-buttons"></div>
+				</div>
+			</div>
+			<div class="form-buttons">
+				<button type="submit">Submit</button>
+				<button type="button" id="cancel-btn">Cancel</button>
+			</div>
+		</form>
+		<button id="download-btn">Download Cards</button>
+	</div>
+	<script src="study_page.js" defer></script>
+</body>
+</html>
