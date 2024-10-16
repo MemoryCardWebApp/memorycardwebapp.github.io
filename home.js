@@ -139,13 +139,23 @@ function saveCards() {
 }
 
 function downloadCards() {
-	const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(cards, null, 2));
-	const downloadAnchorNode = document.createElement('a');
-	downloadAnchorNode.setAttribute("href", dataStr);
-	downloadAnchorNode.setAttribute("download", "cards.json");
-	document.body.appendChild(downloadAnchorNode);
-	downloadAnchorNode.click();
-	downloadAnchorNode.remove();
+	// Create a Blob with the JSON data
+	const jsonData = JSON.stringify(cards, null, 2);
+	const blob = new Blob([jsonData], { type: 'application/json' });
+	
+	// Create a URL for the Blob
+	const url = URL.createObjectURL(blob);
+	
+	// Create a temporary anchor element and trigger the download
+	const a = document.createElement('a');
+	a.href = url;
+	a.download = 'cards.json';
+	document.body.appendChild(a);
+	a.click();
+	
+	// Clean up
+	document.body.removeChild(a);
+	URL.revokeObjectURL(url);
 }
 
 updateCard();
