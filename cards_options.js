@@ -166,5 +166,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
-
-// Make sure to include your existing card-related functions (e.g., loadCards, saveCards, etc.) in this file
