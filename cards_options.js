@@ -15,16 +15,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const removeAllCardsBtn = document.getElementById('remove-all-cards-btn');
 
     let cards = [];
+    let activeButton = null;
 
-    addCardBtn.addEventListener('click', showAddCardForm);
-    editCardsBtn.addEventListener('click', () => {
-        alert('Edit cards functionality to be implemented');
+    addCardBtn.addEventListener('click', () => toggleButtonState(addCardBtn, addCardForm));
+    editCardsBtn.addEventListener('click', () => toggleButtonState(editCardsBtn));
+    downloadCardsBtn.addEventListener('click', () => {
+        toggleButtonState(downloadCardsBtn);
+        if (activeButton === downloadCardsBtn) downloadCards();
     });
-    downloadCardsBtn.addEventListener('click', downloadCards);
-    uploadCardsBtn.addEventListener('click', () => {
-        uploadOptions.style.display = 'block';
+    uploadCardsBtn.addEventListener('click', () => toggleButtonState(uploadCardsBtn, uploadOptions));
+    removeAllCardsBtn.addEventListener('click', () => {
+        toggleButtonState(removeAllCardsBtn);
+        if (activeButton === removeAllCardsBtn) removeAllCards();
     });
-    addCardForm.addEventListener('submit', addNewCard);
 
     replaceCardsBtn.addEventListener('click', () => {
         fileInput.click();
@@ -36,14 +39,62 @@ document.addEventListener('DOMContentLoaded', () => {
         fileInput.onchange = (event) => handleFileUpload(event, false);
     });
 
-    removeAllCardsBtn.addEventListener('click', () => {
+    function toggleButtonState(button, relatedElement) {
+        if (activeButton === button) {
+            // Disable the active button's functionality
+            button.classList.remove('active');
+            if (relatedElement) relatedElement.style.display = 'none';
+            activeButton = null;
+        } else {
+            // Disable the previously active button's functionality
+            if (activeButton) {
+                activeButton.classList.remove('active');
+                if (activeButton === uploadCardsBtn) uploadOptions.style.display = 'none';
+                if (activeButton === addCardBtn) addCardForm.style.display = 'none';
+            }
+            // Enable the clicked button's functionality
+            button.classList.add('active');
+            if (relatedElement) relatedElement.style.display = 'block';
+            activeButton = button;
+        }
+    }
+
+    function removeAllCards() {
         const confirmRemove = confirm("Are you sure you want to remove all cards? This action cannot be undone.");
         if (confirmRemove) {
             cards = [];
             saveCards();
             alert('All cards have been removed.');
         }
-    });
+    }
+
+    function handleFileUpload(event, replace) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const uploadedCards = JSON.parse(e.target.result);
+                    if (Array.isArray(uploadedCards)) {
+                        if (replace) {
+                            cards = uploadedCards;
+                        } else {
+                            cards = cards.concat(uploadedCards);
+                        }
+                        saveCards();
+                        alert('Cards uploaded successfully!');
+                        uploadOptions.style.display = 'none';
+                        activeButton = null;
+                    } else {
+                        throw new Error('Invalid JSON format');
+                    }
+                } catch (error) {
+                    alert('Error parsing JSON file. Please make sure it\'s a valid JSON array of cards.');
+                }
+            };
+            reader.readAsText(file);
+        }
+    }
 
     function showAddCardForm() {
         addCardForm.style.display = 'block';
@@ -148,31 +199,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     typeInput.addEventListener('change', updateSubtypeButtons);
     loadCards();
-
-    function handleFileUpload(event, replace) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                try {
-                    const uploadedCards = JSON.parse(e.target.result);
-                    if (Array.isArray(uploadedCards)) {
-                        if (replace) {
-                            cards = uploadedCards;
-                        } else {
-                            cards = cards.concat(uploadedCards);
-                        }
-                        saveCards();
-                        alert('Cards uploaded successfully!');
-                        uploadOptions.style.display = 'none';
-                    } else {
-                        throw new Error('Invalid JSON format');
-                    }
-                } catch (error) {
-                    alert('Error parsing JSON file. Please make sure it\'s a valid JSON array of cards.');
-                }
-            };
-            reader.readAsText(file);
-        }
-    }
 });
