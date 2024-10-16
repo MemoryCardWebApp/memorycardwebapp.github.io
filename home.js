@@ -14,9 +14,7 @@ const subtypeButtons = document.getElementById('subtype-buttons');
 const downloadBtn = document.getElementById('download-btn');
 
 let currentCardIndex = 0;
-let cards = [
-	{}
-]
+let cards = [];
 
 function updateCard() {
 	if (cards.length === 0) {
@@ -117,19 +115,23 @@ function addNewCard(e) {
 }
 
 function loadCards() {
-	const storedCards = localStorage.getItem('cards');
-	if (storedCards) {
-		cards = JSON.parse(storedCards);
-	} else {
-		// Load initial cards from your static JSON file
-		fetch('cards.json')
-			.then(response => response.json())
-			.then(data => {
+	fetch('cards.json')
+		.then(response => response.json())
+		.then(data => {
+			if (Array.isArray(data) && data.length > 0) {
 				cards = data;
-				localStorage.setItem('cards', JSON.stringify(cards));
-			});
-	}
-	updateCard();
+				console.log('Cards loaded successfully from JSON file');
+			} else {
+				console.log('JSON file is empty or invalid. Using default empty array.');
+				cards = [];
+			}
+			updateCard();
+		})
+		.catch(error => {
+			console.error('Error loading cards:', error);
+			cards = [];
+			updateCard();
+		});
 }
 
 function saveCards() {
@@ -159,3 +161,6 @@ downloadBtn.addEventListener('click', downloadCards);
 
 // Load cards when the page loads
 window.addEventListener('load', loadCards);
+
+// Add event listener for download button
+downloadBtn.addEventListener('click', downloadCards);
