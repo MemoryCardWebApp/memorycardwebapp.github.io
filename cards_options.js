@@ -13,11 +13,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const replaceCardsBtn = document.getElementById('replace-cards-btn');
     const addToExistingBtn = document.getElementById('add-to-existing-btn');
     const removeAllCardsBtn = document.getElementById('remove-all-cards-btn');
+    const cancelBtn = document.getElementById('cancel-btn');
 
     let cards = [];
     let activeButton = null;
 
-    addCardBtn.addEventListener('click', () => toggleButtonState(addCardBtn, addCardForm));
+    addCardBtn.addEventListener('click', () => {
+        toggleButtonState(addCardBtn, addCardForm);
+        updateSubtypeButtons();
+    });
     editCardsBtn.addEventListener('click', () => toggleButtonState(editCardsBtn));
     downloadCardsBtn.addEventListener('click', () => {
         toggleButtonState(downloadCardsBtn);
@@ -40,6 +44,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     addCardForm.addEventListener('submit', addNewCard);
+    cancelBtn.addEventListener('click', () => {
+        resetForm();
+        toggleButtonState(addCardBtn, addCardForm);
+    });
 
     function toggleButtonState(button, relatedElement) {
         if (activeButton === button) {
@@ -99,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function addNewCard(e) {
-        e.preventDefault();
+        e.preventDefault(); // Prevent form from submitting normally
         const front = frontInput.value.trim();
         const back = backInput.value.trim();
         const type = typeInput.value;
@@ -116,7 +124,9 @@ document.addEventListener('DOMContentLoaded', () => {
             cards.push({ front, back, type, subtype });
             saveCards();
             resetForm();
+            toggleButtonState(addCardBtn, addCardForm);
             alert('New card added successfully!');
+            console.log('Card added:', { front, back, type, subtype });
         } else {
             alert('Please fill in all required fields.');
         }
