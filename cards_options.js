@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const fileInput = document.getElementById('file-input');
     const replaceCardsBtn = document.getElementById('replace-cards-btn');
     const addToExistingBtn = document.getElementById('add-to-existing-btn');
+    const removeAllCardsBtn = document.getElementById('remove-all-cards-btn');
 
     let cards = [];
 
@@ -33,6 +34,15 @@ document.addEventListener('DOMContentLoaded', () => {
     addToExistingBtn.addEventListener('click', () => {
         fileInput.click();
         fileInput.onchange = (event) => handleFileUpload(event, false);
+    });
+
+    removeAllCardsBtn.addEventListener('click', () => {
+        const confirmRemove = confirm("Are you sure you want to remove all cards? This action cannot be undone.");
+        if (confirmRemove) {
+            cards = [];
+            saveCards();
+            alert('All cards have been removed.');
+        }
     });
 
     function showAddCardForm() {
