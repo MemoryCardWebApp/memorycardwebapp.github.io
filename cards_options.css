@@ -4,6 +4,7 @@
     display: flex;
     justify-content: center;
     gap: 1rem;
+    margin-top: 2rem;
 }
 
 .main-button {
@@ -18,6 +19,24 @@
 }
 
 .main-button:hover {
+    background-color: #2980b9;
+}
+
+/* Styles for the back button (used in study_page.html and card_options.html) */
+.back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: #3498db;
+    color: white;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
     background-color: #2980b9;
 }
 
@@ -48,6 +67,7 @@
     gap: 1rem;
 }
 
+/* Styles for the option buttons on the card options page */
 .option-button {
     background-color: #3498db;
     color: white;
@@ -62,4 +82,3 @@
 .option-button:hover {
     background-color: #2980b9;
 }
-
