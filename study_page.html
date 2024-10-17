@@ -11,20 +11,36 @@
 	<a href="index.html" class="back-button">Back to Home</a>
 	<div class="container">
 		<h1>Japanese Study Cards</h1>
-		<div id="card-container">
-			<div id="card">
-				<div class="card-face front">
-					<p id="front-text"></p>
+		<div id="study-content">
+			<div id="card-container">
+				<div id="card">
+					<div class="card-face front">
+						<p id="front-text"></p>
+					</div>
+					<div class="card-face back">
+						<p id="back-text"></p>
+					</div>
 				</div>
-				<div class="card-face back">
-					<p id="back-text"></p>
+			</div>
+			<div class="controls">
+				<button id="flip-btn">Flip</button>
+				<button id="next-btn">Next</button>
+			</div>
+			<div class="memory-rating">
+				<p>How well do you remember this card?</p>
+				<div class="rating-buttons">
+					<button class="rating-btn" data-rating="1">1</button>
+					<button class="rating-btn" data-rating="2">2</button>
+					<button class="rating-btn" data-rating="3">3</button>
+					<button class="rating-btn" data-rating="4">4</button>
+					<button class="rating-btn" data-rating="5">5</button>
 				</div>
 			</div>
 		</div>
-		<div class="controls">
-			<button id="prev-btn">Previous</button>
-			<button id="flip-btn">Flip</button>
-			<button id="next-btn">Next</button>
+		<div id="session-summary" style="display: none;">
+			<h2>Session Complete!</h2>
+			<p>You've completed this study session.</p>
+			<button id="new-session-btn">Start New Session</button>
 		</div>
 	</div>
 	<script src="study_page.js" defer></script>
