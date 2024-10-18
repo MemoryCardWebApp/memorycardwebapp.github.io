@@ -27,38 +27,46 @@
     position: absolute;
     top: 20px;
     left: 20px;
-    background-color: #3498db;
+    background-color: #4a90e2;
     color: white;
     padding: 0.5rem 1rem;
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: 50px;
     font-size: 1rem;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .back-button:hover {
-    background-color: #2980b9;
+    background-color: #357abd;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
 .card-options-page {
-    background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
     min-height: 100vh;
     padding: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.card-options-page .container {
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+.container {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 3rem;
+    border-radius: 20px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
     max-width: 600px;
-    margin: 0 auto;
+    width: 90%;
 }
 
 .card-options-page h1 {
     text-align: center;
     color: #333;
     margin-bottom: 2rem;
+    font-size: 2.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .options-container {
@@ -76,32 +84,27 @@
 
 /* Styles for the option buttons on the card options page */
 .option-button, .danger-button {
-    background-color: #3498db;
+    background-color: #4a90e2;
     color: white;
     border: none;
     padding: 10px 15px;
     font-size: 1rem;
-    border-radius: 5px;
+    border-radius: 50px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-bottom: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 100%;
 }
 
 .option-button:hover, .danger-button:hover {
-    background-color: #2980b9;
+    background-color: #357abd;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
 .danger-button {
     background-color: #e74c3c;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    font-size: 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    width: 50%; /* Adjust this value to change the button width */
+    width: 50%;
     max-width: 200px;
 }
 
