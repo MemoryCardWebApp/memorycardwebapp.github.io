@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const uploadCardsBtn = document.getElementById('upload-cards-btn');
     const addCardForm = document.getElementById('add-card-form');
     const frontInput = document.getElementById('front-input');
+    const furiganaInput = document.getElementById('furigana-input');
+    const romajiInput = document.getElementById('romaji-input');
     const backInput = document.getElementById('back-input');
     const typeInput = document.getElementById('type-input');
     const subtypeButtons = document.getElementById('subtype-buttons');
@@ -107,8 +109,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function addNewCard(e) {
-        e.preventDefault(); // Prevent form from submitting normally
+        e.preventDefault();
         const front = frontInput.value.trim();
+        const furigana = furiganaInput.value.trim();
+        const romaji = romajiInput.value.trim();
         const back = backInput.value.trim();
         const type = typeInput.value;
         const subtype = subtypeButtons.querySelector('.active')?.textContent || '';
@@ -121,12 +125,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (front && back && type) {
-            cards.push({ front, back, type, subtype });
+            cards.push({ front, furigana, romaji, back, type, subtype, rating: 0 });
             saveCards();
             resetForm();
             toggleButtonState(addCardBtn, addCardForm);
             alert('New card added successfully!');
-            console.log('Card added:', { front, back, type, subtype });
+            console.log('Card added:', { front, furigana, romaji, back, type, subtype, rating: 0 });
         } else {
             alert('Please fill in all required fields.');
         }
@@ -134,6 +138,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function resetForm() {
         frontInput.value = '';
+        furiganaInput.value = '';
+        romajiInput.value = '';
         backInput.value = '';
         typeInput.value = '';
         subtypeButtons.querySelectorAll('.subtype-button').forEach(button => {
@@ -200,17 +206,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     typeInput.addEventListener('change', updateSubtypeButtons);
-
-    function loadCards() {
-        const storedCards = localStorage.getItem('cards');
-        if (storedCards) {
-            cards = JSON.parse(storedCards);
-            console.log('Cards loaded successfully from localStorage');
-        } else {
-            console.log('No cards found in localStorage. Using empty array.');
-            cards = [];
-        }
-    }
 
     // Load cards when the page loads
     loadCards();

@@ -143,6 +143,11 @@
     align-items: flex-start;
 }
 
+#add-card-form input[readonly] {
+    background-color: #f0f0f0;
+    color: #666;
+}
+
 #add-card-form input,
 #add-card-form select {
     margin: 10px 0;
